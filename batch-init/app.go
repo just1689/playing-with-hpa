@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"github.com/google/uuid"
@@ -20,34 +21,46 @@ func main() {
 	logrus.Println("Address: ", *addr)
 	logrus.Println("NSQd address:", *nsqAddr)
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		batchID := uuid.New().String()
-		startBatch(*nsqAddr)
-		w.Write([]byte(fmt.Sprint("ok: ", batchID)))
-	})
+	http.HandleFunc("/", handleStartBatchRequest)
 	http.ListenAndServe(*addr, nil)
 
 }
 
-func startBatch(nsqAddr string) (err error) {
+func handleStartBatchRequest(w http.ResponseWriter, r *http.Request) {
+	batchID := uuid.New().String()
+	err := startBatch(*nsqAddr, batchID)
+	if err != nil {
+		http.Error(w, "failed to start batch", http.StatusInternalServerError)
+		return
+	}
+	w.Write([]byte(fmt.Sprint("ok: ", batchID)))
 
-	i := model.BatchInstruction{}
+}
+
+func startBatch(nsqAddr string, batchID string) (err error) {
 
 	config := nsq.NewConfig()
 	w, _ := nsq.NewProducer(nsqAddr, config)
 
-	err = w.Publish("batch", []byte("test"))
-	if err != nil {
-		logrus.Errorln("Could not connect")
-		return
+	for i := 1; i <= 1000000; i++ {
+		instruction := model.BatchInstruction{
+			BatchID:   batchID,
+			AccountID: fmt.Sprint("account-", i),
+		}
+		var b []byte
+		b, err = json.Marshal(instruction)
+		if err != nil {
+			logrus.Errorln(err)
+			return
+		}
+		err = w.Publish("batch", b)
+		if err != nil {
+			logrus.Errorln("Could not connect")
+			return
+		}
 	}
 
 	w.Stop()
-
-	//TODO: connect to nsq
-
-	//TODO: write a million accounts
-
-	//TODO: include the account number and the batch ID
+	return
 
 }
