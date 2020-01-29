@@ -19,6 +19,7 @@ func StartInterestWorker(nsqAddr string) {
 			if err != nil {
 				logrus.Errorln(err)
 			}
+			logrus.Println("Handling instruction: batch #", instruction.BatchID, " on account: ", instruction.AccountID)
 			DoSomeWork()
 			return nil
 		}))

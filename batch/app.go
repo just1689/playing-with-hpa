@@ -38,6 +38,9 @@ func startBatch(nsqAddr string, batchID string) (err error) {
 			BatchID:   batchID,
 			AccountID: fmt.Sprint("account-", i),
 		}
+		if i%1000 != 0 {
+			logrus.Println("Adding instruction: batch #", instruction.BatchID, " on account: ", instruction.AccountID)
+		}
 		var b []byte
 		b, err = json.Marshal(instruction)
 		if err != nil {
