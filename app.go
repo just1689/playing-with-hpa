@@ -28,7 +28,7 @@ func main() {
 		interest.StartInterestWorker(nsqAddr)
 	} else if job == "counter" {
 		logrus.Println("> As counter...")
-		addr := os.Getenv("address")
+		logrus.Println("Address: ", addr)
 		counter.StartCounter(addr)
 	}
 
