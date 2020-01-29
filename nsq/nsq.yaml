@@ -102,7 +102,7 @@ kind: Deployment
 metadata:
   name: nsqd
 spec:
-  replicas: 3
+  replicas: 1
   template:
     metadata:
       labels:
