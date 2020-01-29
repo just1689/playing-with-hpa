@@ -12,7 +12,7 @@ import (
 
 func StartBatchServer(addr string, nsqAddr string) {
 	http.HandleFunc("/", createStartBatchHandler(nsqAddr))
-	http.ListenAndServe(addr, nil)
+	logrus.Fatalln(http.ListenAndServe(addr, nil))
 }
 
 func createStartBatchHandler(nsqAddr string) func(w http.ResponseWriter, r *http.Request) {

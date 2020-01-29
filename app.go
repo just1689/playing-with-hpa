@@ -10,20 +10,21 @@ import (
 
 func main() {
 	flag.Parse()
-	logrus.Println("Starting batch-init!")
+	logrus.Println("Starting...")
 
 	job := os.Getenv("job")
 	addr := os.Getenv("address")
 	nsqAddr := os.Getenv("nsqAddr")
 
 	if job == "batch" {
+		logrus.Println("> As batch...")
 		logrus.Println("Address: ", addr)
 		logrus.Println("NSQd address:", nsqAddr)
 		batch.StartBatchServer(addr, nsqAddr)
 	} else if job == "worker" {
+		logrus.Println("> As worker...")
 		logrus.Println("NSQd address:", nsqAddr)
 		interest.StartInterestWorker(nsqAddr)
-		select {}
 
 	}
 
