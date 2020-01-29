@@ -11,7 +11,7 @@ RUN go mod vendor
 
 FROM vendor as builder
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app batch-init/app.go
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .
 
 
 FROM scratch as final
