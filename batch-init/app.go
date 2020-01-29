@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/just1689/playing-with-hpa/model"
+	"github.com/nsqio/go-nsq"
 	"github.com/sirupsen/logrus"
 	"net/http"
-	"github.com/nsqio/go-nsq"
 )
 
 var addr = flag.String("address", ":8080", "The listen address for the batch server")
@@ -29,14 +29,9 @@ func main() {
 
 }
 
-
-
-
 func startBatch(nsqAddr string) (err error) {
 
-	i := model.BatchInstruction{
-	}
-
+	i := model.BatchInstruction{}
 
 	config := nsq.NewConfig()
 	w, _ := nsq.NewProducer(nsqAddr, config)
