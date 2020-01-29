@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"github.com/just1689/playing-with-hpa/batch"
+	"github.com/just1689/playing-with-hpa/counter"
 	"github.com/just1689/playing-with-hpa/interest"
 	"github.com/sirupsen/logrus"
 	"os"
@@ -25,7 +26,10 @@ func main() {
 		logrus.Println("> As worker...")
 		logrus.Println("NSQd address:", nsqAddr)
 		interest.StartInterestWorker(nsqAddr)
-
+	} else if job == "counter" {
+		logrus.Println("> As counter...")
+		addr := os.Getenv("address")
+		counter.StartCounter(addr)
 	}
 
 	logrus.Errorln("Nothing left to do. Shutting down")
