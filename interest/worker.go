@@ -9,7 +9,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func StartInterestWorker(nsqAddr *string) {
+func StartInterestWorker(nsqAddr string) {
 	go func() {
 		config := nsq.NewConfig()
 		q, _ := nsq.NewConsumer(model.BatchTopicName, fmt.Sprint(uuid.New().String(), "#ephemeral"), config)
@@ -22,10 +22,8 @@ func StartInterestWorker(nsqAddr *string) {
 			DoSomeWork()
 			return nil
 		}))
-		if err := q.ConnectToNSQD(*nsqAddr); err != nil {
+		if err := q.ConnectToNSQD(nsqAddr); err != nil {
 			logrus.Panic("Could not connect to NSQ for subscribe", nsqAddr)
 		}
-
-		select {}
 	}()
 }

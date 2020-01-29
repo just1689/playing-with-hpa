@@ -10,15 +10,15 @@ import (
 	"net/http"
 )
 
-func StartBatchServer(addr *string, nsqAddr *string) {
+func StartBatchServer(addr string, nsqAddr string) {
 	http.HandleFunc("/", createStartBatchHandler(nsqAddr))
-	http.ListenAndServe(*addr, nil)
+	http.ListenAndServe(addr, nil)
 }
 
-func createStartBatchHandler(nsqAddr *string) func(w http.ResponseWriter, r *http.Request) {
+func createStartBatchHandler(nsqAddr string) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		batchID := uuid.New().String()
-		err := startBatch(*nsqAddr, batchID)
+		err := startBatch(nsqAddr, batchID)
 		if err != nil {
 			http.Error(w, "failed to start batch", http.StatusInternalServerError)
 			return
