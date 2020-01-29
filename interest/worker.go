@@ -21,6 +21,7 @@ func StartInterestWorker(nsqAddr string) {
 			}
 			logrus.Println("Handling instruction: batch #", instruction.BatchID, " on account: ", instruction.AccountID)
 			DoSomeWork()
+			NotifyDone()
 			return nil
 		}))
 		if err := q.ConnectToNSQD(nsqAddr); err != nil {
