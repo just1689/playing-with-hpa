@@ -27,4 +27,6 @@ func main() {
 
 	}
 
+	logrus.Errorln("Nothing left to do. Shutting down")
+
 }
