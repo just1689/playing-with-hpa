@@ -1,5 +1,18 @@
 # Playing with HPA
 
+This small demo is an example of how to use horizontal pod autoscaling for scaling out workloads by CPU usage metrics in Kubernetes.
+
+The applications included:
+- batch: for starting new jobs
+- worker: for "calculating interest"
+- counter: keeping track of how many jobs have reported being done.
+
+All three are built as a single binary and they use the variable `job` to determine what to run.
+
+The queue chosen for this project is NSQ.
+
+The `k8s/` directory contains yaml for deployment to a Kubernetes environment.
+
 ## Before you run
 
 ### Install metrics-server
