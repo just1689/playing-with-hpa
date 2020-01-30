@@ -33,7 +33,7 @@ func startBatch(nsqAddr string, batchID string) (err error) {
 	config := nsq.NewConfig()
 	w, _ := nsq.NewProducer(nsqAddr, config)
 
-	for i := 1; i <= 1000000; i++ {
+	for i := 1; i <= 100000; i++ {
 		instruction := model.BatchInstruction{
 			BatchID:   batchID,
 			AccountID: fmt.Sprint("account-", i),
