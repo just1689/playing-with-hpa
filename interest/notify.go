@@ -10,7 +10,7 @@ import (
 func NotifyDone() {
 	ctx, cancel := context.WithTimeout(context.Background(), 75*time.Millisecond)
 	defer cancel()
-	req, err := http.NewRequest("GET", "http://counter.default.svc.cluster.local:8080/add", nil)
+	req, err := http.NewRequest("GET", "http://counter:8080/add", nil)
 	if err != nil {
 		logrus.Errorln("Request error", err)
 	}
