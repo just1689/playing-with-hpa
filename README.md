@@ -12,8 +12,7 @@ Modify the batch.yaml image bit to reference your image.
 
 ### Deploy to K8s
 ```shell script
-kubectl apply -f nsq/
-kubectl apply -f batch.yaml
+kubectl apply -f k8s/
 ```
 
 Port forward the batch bit
