@@ -1,5 +1,27 @@
 # Playing with HPA
 
+## Before you run
+
+### Install metrics-server
+Clone https://github.com/kubernetes-sigs/metrics-server.git
+```shell script
+kubectl apply -f deploy/1.8+
+```
+### Edit the deployment 
+
+```shell script
+kubectl edit deployment/metrics-server -n kube-system
+```
+
+add the flags within args:
+```yaml
+ - --kubelet-insecure-tls
+ - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
+```
+
+Save and exit
+
+
 ## How to run
 
 ### Build
