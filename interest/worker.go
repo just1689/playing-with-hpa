@@ -22,10 +22,6 @@ func StartInterestWorker(nsqAddr string) {
 	select {}
 }
 
-type MessageHandler struct {
-	MaxInFlight int
-}
-
 var HandleMessage nsq.HandlerFunc = func(message *nsq.Message) error {
 	instruction := model.BatchInstruction{}
 	err := json.Unmarshal(message.Body, &instruction)
