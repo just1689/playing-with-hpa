@@ -15,4 +15,7 @@ func NotifyDone() {
 		logrus.Errorln("Request error", err)
 	}
 	_, err = http.DefaultClient.Do(req.WithContext(ctx))
+	if err != nil {
+		logrus.Errorln("Do Request error", err)
+	}
 }
