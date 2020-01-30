@@ -30,6 +30,6 @@ var HandleMessage nsq.HandlerFunc = func(message *nsq.Message) error {
 	}
 	logrus.Println("Handling instruction: batch #", instruction.BatchID, " on account: ", instruction.AccountID)
 	DoSomeWork()
-	NotifyDone()
+	NotifyDone(instruction.BatchID)
 	return nil
 }

@@ -2,15 +2,16 @@ package interest
 
 import (
 	"context"
+	"fmt"
 	"github.com/sirupsen/logrus"
 	"net/http"
 	"time"
 )
 
-func NotifyDone() {
+func NotifyDone(batchID string) {
 	ctx, cancel := context.WithTimeout(context.Background(), 75*time.Millisecond)
 	defer cancel()
-	req, err := http.NewRequest("GET", "http://counter:8080/add", nil)
+	req, err := http.NewRequest("GET", fmt.Sprint("http://counter:8080/add?batchID=", batchID), nil)
 	if err != nil {
 		logrus.Errorln("Request error", err)
 	}
