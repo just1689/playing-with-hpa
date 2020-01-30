@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
         - name: batch
-          image: registry.captainjustin.space/just1689/batch:latest
+          image: just1689/batch:latest
           imagePullPolicy: Always
           resources:
             requests:
