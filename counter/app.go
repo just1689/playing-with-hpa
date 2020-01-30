@@ -10,7 +10,10 @@ import (
 	"sync/atomic"
 )
 
-var BatchCounters Batch
+var BatchCounters Batch = Batch{
+	Mutex: sync.Mutex{},
+	jobs:  make(map[string]*uint64),
+}
 
 type Batch struct {
 	sync.Mutex
