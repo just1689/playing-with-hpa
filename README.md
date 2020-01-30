@@ -44,7 +44,7 @@ kubectl port-forward service/batch 8080
 
 Open http://localhost:8080/ in the browser
 
-<Ctrl> + C to stop it
+Ctrl + C to stop it
 
 Now forward the counter
 
