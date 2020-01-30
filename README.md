@@ -7,7 +7,7 @@
 Build the image and push it to a registry that your cluster has access to
 `docker build -t MY_IMAGE:TAG .`
 
-Modify the batch.yaml image bit to reference your image.
+Modify the k8s/*.yaml files' image bit to reference your image.
 
 
 ### Deploy to K8s
