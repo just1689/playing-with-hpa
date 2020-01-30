@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/sirupsen/logrus"
 	"net/http"
+	"strconv"
 	"sync"
 	"sync/atomic"
 )
@@ -29,16 +30,16 @@ func (b *Batch) AddSafely(name string) {
 	}
 }
 
-func (b *Batch) GetSafely(name string) uint64 {
+func (b *Batch) GetSafely() (result [][]string) {
 	b.Lock()
 	defer b.Unlock()
-	counter, found := b.jobs[name]
-	if found {
-		return *counter
-	} else {
-		logrus.Println("could not get safely - no batch by name")
+	for x, y := range b.jobs {
+		var line []string
+		line = append(line, x)
+		line = append(line, strconv.FormatUint(*y, 10))
+		result = append(result, line)
 	}
-	return 0
+	return
 }
 
 func StartCounter(addr string) {
@@ -50,18 +51,15 @@ func StartCounter(addr string) {
 			return
 		}
 		BatchCounters.AddSafely(batchID)
-		i := BatchCounters.GetSafely(batchID)
-		w.Write([]byte(fmt.Sprint(i)))
+		w.Write([]byte("ok"))
 	})
 	http.HandleFunc("/get", func(w http.ResponseWriter, r *http.Request) {
-		batchID, err := getBatchID(r)
-		if err != nil {
-			logrus.Errorln("batchID is missing")
-			http.Error(w, "no batchID supplied", http.StatusBadRequest)
-			return
+		for _, row := range BatchCounters.GetSafely() {
+			for _, bit := range row {
+				w.Write([]byte(fmt.Sprint(bit, " - ")))
+			}
+			w.Write([]byte(" <br />"))
 		}
-		i := BatchCounters.GetSafely(batchID)
-		w.Write([]byte(fmt.Sprint(i)))
 	})
 	http.ListenAndServe(addr, nil)
 }
