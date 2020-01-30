@@ -27,6 +27,7 @@ func StartInterestWorker(nsqAddr string) {
 		if err := q.ConnectToNSQD(nsqAddr); err != nil {
 			logrus.Panic("Could not connect to NSQ for subscribe", nsqAddr)
 		}
+
 	}()
 	select {}
 }

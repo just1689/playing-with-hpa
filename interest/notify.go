@@ -1,7 +1,18 @@
 package interest
 
-import "net/http"
+import (
+	"context"
+	"github.com/sirupsen/logrus"
+	"net/http"
+	"time"
+)
 
 func NotifyDone() {
-	http.Get("http://counter:8080/add")
+	ctx, cancel := context.WithTimeout(context.Background(), 500*time.Millisecond)
+	defer cancel()
+	req, err := http.NewRequest("GET", "http://counter:8080/add", nil)
+	if err != nil {
+		logrus.Errorln("Request error", err)
+	}
+	_, err = http.DefaultClient.Do(req.WithContext(ctx))
 }
