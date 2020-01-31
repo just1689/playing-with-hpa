@@ -31,7 +31,7 @@ func main() {
 	} else if job == "counter" {
 		logrus.Println("> As counter...")
 		logrus.Println("Address: ", addr)
-		counter.StartCounter(addr)
+		counter.StartCounter(addr, nsqAddr)
 	}
 
 	logrus.Errorln("Nothing left to do. Shutting down")

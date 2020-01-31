@@ -43,4 +43,6 @@ spec:
               value: "counter"
             - name: address
               value: ":8080"
+            - name: nsqAddr
+              value: "nsqd:4150"
       terminationGracePeriodSeconds: 5
