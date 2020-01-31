@@ -41,4 +41,6 @@ spec:
               value: ":8080"
             - name: nsqAddr
               value: "nsqd:4150"
+            - name: batchSize
+              value: "10"
       terminationGracePeriodSeconds: 5

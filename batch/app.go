@@ -8,7 +8,11 @@ import (
 	"github.com/nsqio/go-nsq"
 	"github.com/sirupsen/logrus"
 	"net/http"
+	"os"
+	"strconv"
 )
+
+var BatchSize = 100000
 
 func StartBatchServer(addr string, nsqAddr string) {
 	http.HandleFunc("/", createStartBatchHandler(nsqAddr))
@@ -33,7 +37,7 @@ func startBatch(nsqAddr string, batchID string) (err error) {
 	config := nsq.NewConfig()
 	w, _ := nsq.NewProducer(nsqAddr, config)
 
-	for i := 1; i <= 100000; i++ {
+	for i := 1; i <= BatchSize; i++ {
 		instruction := model.BatchInstruction{
 			BatchID:   batchID,
 			AccountID: fmt.Sprint("account-", i),
@@ -57,4 +61,18 @@ func startBatch(nsqAddr string, batchID string) (err error) {
 	w.Stop()
 	return
 
+}
+
+func UpdateBatchFromEnv() {
+	defer logrus.Infoln("> setting batch size to ", BatchSize)
+	s := os.Getenv("batchSize")
+	if s == "" {
+		return
+	}
+	i, err := strconv.Atoi(s)
+	if err != nil {
+		logrus.Errorln("Failed to load batchSize environment variable as an integer. Defaulting... ")
+		return
+	}
+	BatchSize = i
 }

@@ -21,6 +21,7 @@ func main() {
 		logrus.Println("> As batch...")
 		logrus.Println("Address: ", addr)
 		logrus.Println("NSQd address:", nsqAddr)
+		batch.UpdateBatchFromEnv()
 		batch.StartBatchServer(addr, nsqAddr)
 	} else if job == "worker" {
 		logrus.Println("> As worker...")
