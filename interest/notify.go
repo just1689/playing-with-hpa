@@ -1,21 +1,29 @@
 package interest
 
 import (
-	"context"
+	"github.com/just1689/playing-with-hpa/model"
+	"github.com/nsqio/go-nsq"
 	"github.com/sirupsen/logrus"
-	"net/http"
-	"time"
 )
 
-func NotifyDone() {
-	ctx, cancel := context.WithTimeout(context.Background(), 75*time.Millisecond)
-	defer cancel()
-	req, err := http.NewRequest("GET", "http://counter:8080/add", nil)
-	if err != nil {
-		logrus.Errorln("Request error", err)
-	}
-	_, err = http.DefaultClient.Do(req.WithContext(ctx))
-	if err != nil {
-		logrus.Errorln("Do Request error", err)
-	}
+func StartPublisher(nsqAddr string) {
+	go func() {
+		config := nsq.NewConfig()
+		config.MaxInFlight = 10
+		p, err := nsq.NewProducer(nsqAddr, config)
+		if err != nil {
+			logrus.Fatal(err)
+		}
+		NotifyDone = func() {
+			//TODO: retry?
+			err := p.Publish(model.CountTopicName, []byte(" "))
+			if err != nil {
+				logrus.Errorln(err)
+			}
+		}
+	}()
+}
+
+var NotifyDone = func() {
+	logrus.Fatalln("NOTIFY NOT IMPLEMENTED")
 }

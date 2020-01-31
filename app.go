@@ -26,6 +26,7 @@ func main() {
 	} else if job == "worker" {
 		logrus.Println("> As worker...")
 		logrus.Println("NSQd address:", nsqAddr)
+		interest.StartPublisher(nsqAddr)
 		interest.StartInterestWorker(nsqAddr)
 	} else if job == "counter" {
 		logrus.Println("> As counter...")

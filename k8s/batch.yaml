@@ -42,5 +42,5 @@ spec:
             - name: nsqAddr
               value: "nsqd:4150"
             - name: batchSize
-              value: "10"
+              value: "1000"
       terminationGracePeriodSeconds: 5
